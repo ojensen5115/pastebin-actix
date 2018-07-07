@@ -274,7 +274,7 @@ fn delete(info: Path<(String, String)>) -> Result<HttpResponse> {
     let id = &info.0;
     let key = &info.1;
     if key != &gen_key(&id) {
-        //return Ok(HttpResponse::Unauthorized().content_type("text/plain; charset=utf-8").body("Unauthorized: Invalid key\n"));
+        return Ok(HttpResponse::Unauthorized().content_type("text/plain; charset=utf-8").body("Unauthorized: Invalid key\n"));
     }
     // delete file
     std::fs::remove_file(format!("{}/{}", UPLOADS_DIR, id))?;

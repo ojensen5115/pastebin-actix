@@ -6,7 +6,7 @@
                               ╚██╗ ██╗
                                ╚═╝ ╚═╝
 
- This application is a PasteBin clone written in Rust using the Iron framework.
+ This application is a PasteBin clone written in Rust, powered by Actix-web.
  It is designed primarily to be used via the `curl` command, although it works
  from a browser too. Pastes are deleted when they are 30 days old (since last
  modification).
@@ -28,8 +28,8 @@
  GET /<id>/<?ext>
      Retrieves the content for the paste associated with <id>. If the optional
      parameter <ext> is supplied, syntax highlighting associated with the file
-     extension <ext> is applied to the result (either via terminal escapes if
-     your UserAgent begins with "curl/", or HTML othersise).
+     extension <ext> is applied to the result (either via HTML or terminal
+     escape codes, depending on whether you accept text/html).
      - Yields a 404 Not Found if <id> does not exist
      - Yields a 403 Bad Request if <ext> is an unknown file extension.
 
