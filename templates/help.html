@@ -1,0 +1,71 @@
+
+                               ██╗ ██╗
+                              ██╔╝ ██║
+                             ██╔╝  ██║ █████╗ █████╗
+                             ╚██╗  ╚═╝ ╚════╝ ╚════╝
+                              ╚██╗ ██╗
+                               ╚═╝ ╚═╝
+
+ This application is a PasteBin clone written in Rust using the Iron framework.
+ It is designed primarily to be used via the `curl` command, although it works
+ from a browser too. Pastes are deleted when they are 30 days old (since last
+ modification).
+
+ Accepted requests are:
+
+ POST /
+     Accepts raw data in the body of the request and responds with the View and
+     Edit URLs of the resulting paste. The Edit URL simply includes the edit key
+     as part of the URL (see DELETE and PUT below).
+     - Yields a 403 Bad Request if the paste is not valid UTF-8, or if it is
+       larger than 2 MB.
+
+     $ echo "hello world" | curl --data-binary @- {{scheme}}://{{host}}
+     View URL: {{scheme}}://{{host}}/{{id}}
+     Edit URL: {{scheme}}://{{host}}/{{id}}/{{key}}
+
+
+ GET /<id>/<?ext>
+     Retrieves the content for the paste associated with <id>. If the optional
+     parameter <ext> is supplied, syntax highlighting associated with the file
+     extension <ext> is applied to the result (either via terminal escapes if
+     your UserAgent begins with "curl/", or HTML othersise).
+     - Yields a 404 Not Found if <id> does not exist
+     - Yields a 403 Bad Request if <ext> is an unknown file extension.
+
+     $ curl {{scheme}}://{{host}}/{{id}}
+     hello world
+     $ curl {{scheme}}://{{host}}/{{id}}/{{ext}}
+     hello world [with Rust syntax highlighting]
+
+
+ DELETE /<id>/<key>
+     Deletes the paste associated with <id>, provided that <key> is valid.
+     - Yields a 403 Bad Request if the paste does not exist, or if the key is
+       invalid.
+
+     $ curl -X DELETE {{scheme}}://{{host}}/{{id}}/{{key}}
+     Paste Deleted.
+
+
+ PUT /<id>/<key>
+     Replaces the contents of the paste associated with <id>, provided that
+     <key> is valid.
+     - Yields a 403 Bad Request if the paste does not exist, or if the key is
+       invalid, or is larger than 2 MB.
+
+     $ echo "other world" | curl -X PUT --data-binary @- \
+     > {{scheme}}://{{host}}/{{id}}/{{key}}
+     {{scheme}}://{{host}}/{{id}} overwritten.
+
+________________________________________________________________________________
+
+
+ You may find this bash function useful. Put it in your .bashrc and then run it
+ via `pb file.txt` or `cat file.txt | pb`
+
+ function pb() {
+     local file=${1:-/dev/stdin}
+     curl --data-binary @${file} {{scheme}}://{{host}}
+ }
+

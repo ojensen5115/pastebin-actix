@@ -1,0 +1,24 @@
+
+                               ██╗ ██╗
+                              ██╔╝ ██║
+                             ██╔╝  ██║ █████╗ █████╗
+                             ╚██╗  ╚═╝ ╚════╝ ╚════╝
+                              ╚██╗ ██╗
+                               ╚═╝ ╚═╝
+
+To create a paste, POST to /
+    $ cat main.rs | curl --data-binary @- {{scheme}}://{{host}}
+
+To retrieve a paste, GET to /<id>/<?ext>
+    $ curl {{scheme}}://{{host}}/{{id}}     # this app's source
+    $ curl {{scheme}}://{{host}}/{{id}}/{{ext}}  # this app's source (rust syntax)
+
+To replace a paste, PUT to /<id>/<key>
+    $ echo "Hello World" | curl -X PUT --data-binary @- \
+    > {{scheme}}://{{host}}/{{id}}/{{key}}
+
+To delete a paste, DELETE to /<id>/<key>
+    $ curl -X DELETE {{scheme}}://{{host}}/{{id}}/{{key}}
+
+For help and a shortcut alias, visit {{scheme}}://{{host}}/help
+

@@ -1,0 +1,19 @@
+[package]
+name = "pastebin-actix"
+version = "0.1.0"
+authors = ["Oliver Jensen <ojensen5115@gmail.com>"]
+
+[dependencies]
+actix = "0.5"
+actix-web = "^0.6"
+askama = "0.6"
+bytes = "0.4"
+rust-crypto = "^0.2"
+env_logger = "0.5"
+futures = "*"
+lazy_static = "0.2.2"
+rand = "*"
+syntect = "1.0.3"
+
+[build-dependencies]
+askama = "0.6"
